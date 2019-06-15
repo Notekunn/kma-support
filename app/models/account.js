@@ -1,22 +1,24 @@
 const Sequelize = require("sequelize");
 module.exports = function({sequelize}) {
-  return sequelize.define('user', {
-    chatfuel_user_id: {
-      type: Sequelize.BIGINT,
+  return sequelize.define('account', {
+    studentCode: {
+      type: Sequelize.STRING,
       primaryKey: true,
       autoIncrement: false
     },
-    first_name: {
+    password: {
       type: Sequelize.STRING
     },
-    last_name: {
+    name: {
       type: Sequelize.STRING
     },
-    profile_pic_url: {
+    className: {
       type: Sequelize.STRING
     },
-    gender: {
-      type: Sequelize.STRING
+    userId:{
+      type: Sequelize.BIGINT,
+      primaryKey: true,
+      autoIncrement: false
     }
   });
 }

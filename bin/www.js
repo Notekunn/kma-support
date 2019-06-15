@@ -1,9 +1,10 @@
-#!/usr/bin/env node
+require("dotenv").config();
+require('module-alias/register');
 const app = require('../app');
 const debug = require('debug')('workspace:server');
 const http = require('http');
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || 8080);
 app.set('port', port);
 
 

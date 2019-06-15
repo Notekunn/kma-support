@@ -18,9 +18,11 @@
     "sequelize": "^5.8.9"
   },
   "_moduleAliases": {
-    "@models": "app/models",
-    "@routes": "app/routes",
-    "@controllers": "app/controllers",
-    "@config": "config"
+    "@models": "./app/models",
+    "@routes": "./app/routes",
+    "@controllers": "./app/controllers",
+    "@config": "./config",
+    "@public": "./public",
+    "@views": "./app/view"
   }
 }
