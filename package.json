@@ -6,23 +6,29 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "chatfuel-helper": "^1.1.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.0.0",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
+    "express-validator": "^5.3.1",
     "http-errors": "~1.6.3",
     "module-alias": "^2.2.0",
     "morgan": "~1.9.1",
     "mysql2": "^1.6.5",
-    "sequelize": "^5.8.9"
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "sequelize": "^5.8.9",
+    "tin-chi-kma": "^1.0.2"
   },
   "_moduleAliases": {
+    "@controllers": "./app/controllers",
+    "@helpers": "./app/helpers",
     "@models": "./app/models",
     "@routes": "./app/routes",
-    "@controllers": "./app/controllers",
+    "@handlers": "./app/handlers",
     "@config": "./config",
-    "@public": "./public",
-    "@views": "./app/view"
+    "@configFile": "./config/config.json"
   }
 }

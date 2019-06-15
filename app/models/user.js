@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-module.exports = function({sequelize}) {
+module.exports = function({ sequelize }) {
   return sequelize.define('user', {
     chatfuel_user_id: {
       type: Sequelize.BIGINT,
@@ -17,6 +17,18 @@ module.exports = function({sequelize}) {
     },
     gender: {
       type: Sequelize.STRING
+    },
+    filterBadword: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true
+    },
+    voiceChat: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+    otherSetting: {
+      type: Sequelize.STRING,
+      defaultValue: "{}"
     }
   });
 }

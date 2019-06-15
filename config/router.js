@@ -1,8 +1,10 @@
-module.exports = function({app}) {
+module.exports = function({app, models}) {
 
-  const indexRouter = require('@routes/index');
-  const usersRouter = require('@routes/users');
+  app.use('/', require('@routes/index'));
+  app.use('/users', require('@routes/users'));
+  
+  //Chatfuel
+  app.use('/api/chatfuel/', require("@routes/api/chatfuel/index")({models}));
+  app.use('/api/chatfuel/connect', require("@routes/api/chatfuel/connect")({models}));
 
-  app.use('/', indexRouter);
-  app.use('/users', usersRouter);
 }
