@@ -96,6 +96,5 @@ const indexRouterController = function({ models: { User, Account } }) {
     }
 }
 
-module.exports = {
-    indexRouterController
-}
+module.exports = indexRouterController
+

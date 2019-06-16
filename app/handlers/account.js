@@ -34,5 +34,13 @@ module.exports = class Account {
             })
         })
     }
+    
+    remove(chatfuel_user_id){
+        const account = this.get(chatfuel_user_id);
+        if(!account) return Promise.solve(false);
+        return account.destroy()
+        .then(() => Promise.solve(false))
+        .catch(() => Promise.solve(true))
+    }
 
 }
