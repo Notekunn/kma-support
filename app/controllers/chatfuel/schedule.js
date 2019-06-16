@@ -7,11 +7,10 @@ const { HTTPS } = require("@configFile");
 module.exports = function({ models: { Schedule, Account } }) {
     const scheduleHandler = new ScheduleHandler(Schedule);
     const accountHandler = new AccountHandler(Account);
-    const getDownload = async function(req, res, next) {
+    const download = async function(req, res, next) {
         if (!validated(req, res)) return;
         let { chatfuel_user_id, gender, first_name, last_name, profile_pic_url, url_server } = req.query;
         let account = await accountHandler.get(chatfuel_user_id);
-        console.log(account)
         if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
         scheduleHandler
             .getSemester(account.studentCode, account.password)
@@ -24,15 +23,13 @@ module.exports = function({ models: { Schedule, Account } }) {
                 semesters.splice(0, 4).forEach(function(semester) {
                     let [number, start, end] = semester.name.split('_');
                     let buttons = [chatfuel.createButtonPostBack({
-                        url: buildUrl(`${HTTPS ? 'https': 'http' }://${url_server}/api/chatfuel/schedule/download/`, {
+                        url: buildUrl(`${HTTPS ? 'https': 'http' }://${url_server}/api/chatfuel/schedule/save/`, {
                             queryParams: {
                                 chatfuel_user_id,
                                 gender,
                                 first_name,
                                 last_name,
                                 profile_pic_url,
-                                studentCode: account.studentCode,
-                                password: account.password,
                                 semester: semester.value,
                             }
                         }),
@@ -50,14 +47,14 @@ module.exports = function({ models: { Schedule, Account } }) {
 
     }
 
-    const postDownload = async function(req, res, next) {
+    const saveSchedule = async function(req, res, next) {
         if (!validated(req, res)) return;
         let { chatfuel_user_id, semester } = req.query;
         let account = await accountHandler.get(chatfuel_user_id);
         if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
         scheduleHandler
             .save(account.studentCode, account.password, semester)
-            .then(() => res.send((new Chatfuel()).sendText("Đang tiến hành tải thời khóa biểu về!Vui lòng chờ trong giây lát!").render()))
+            .then(() => res.send((new Chatfuel()).sendText("Đang tiến hành tải thời khóa biểu về!\nVui lòng chờ trong giây lát!").render()))
             .catch((e) => res.send((new Chatfuel()).sendText("Không thể tải thời khóa biểu:\n" + e).render()))
     }
 
@@ -74,8 +71,8 @@ module.exports = function({ models: { Schedule, Account } }) {
     }
 
     return {
-        getDownload,
-        postDownload,
+        download,
+        saveSchedule,
         search,
         broadcast
     };
