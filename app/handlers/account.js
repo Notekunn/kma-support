@@ -5,16 +5,14 @@ module.exports = class Account {
     }
 
     async add({ chatfuel_user_id, studentCode, password }) {
-        const [account, created] = await this.Account.findOrCreate({
-            where: {
-                userId: chatfuel_user_id
-            },
-            defaults: {
-                studentCode,
-                password
-            }
+        const created = await this.Account.upsert({
+            userId: chatfuel_user_id,
+            studentCode,
+            password
+        }, {
+            fields: ['studentCode', 'password']
         })
-        return [account.get({ plain: true }), created];
+        return [created];
     }
 
     async get(chatfuel_user_id) {
@@ -34,13 +32,13 @@ module.exports = class Account {
             })
         })
     }
-    
-    remove(chatfuel_user_id){
+
+    remove(chatfuel_user_id) {
         const account = this.get(chatfuel_user_id);
-        if(!account) return Promise.solve(false);
+        if (!account) return Promise.solve(false);
         return account.destroy()
-        .then(() => Promise.solve(false))
-        .catch(() => Promise.solve(true))
+            .then(() => Promise.solve(false))
+            .catch(() => Promise.solve(true))
     }
 
 }

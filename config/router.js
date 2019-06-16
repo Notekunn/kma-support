@@ -6,6 +6,7 @@ module.exports = function({app, models}) {
   //Chatfuel
   app.use('/api/chatfuel/', require("@routes/api/chatfuel/index")({models}));
   app.use('/api/chatfuel/connect', require("@routes/api/chatfuel/connect")({models}));
-  app.use('/api/chatfuel/disconnect', require("@routes/api/chatfuel/disconnect")({models}));
+  app.use('/api/chatfuel/disconnect', require("@routes/api/chatfuel/disconnect")({models}));  
+  app.use('/api/chatfuel/schedule/', require("@routes/api/chatfuel/schedule")({models}));
 
 }
