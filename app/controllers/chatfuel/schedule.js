@@ -9,8 +9,8 @@ module.exports = function({ models: { Schedule, Account } }) {
     const accountHandler = new AccountHandler(Account);
     const download = async function(req, res, next) {
         if (!validated(req, res)) return;
-        let { chatfuel_user_id, gender, first_name, last_name, profile_pic_url, url_server } = req.query;
-        let account = await accountHandler.get(chatfuel_user_id);
+        const { chatfuel_user_id, gender, first_name, last_name, profile_pic_url, url_server } = req.query;
+        const account = await accountHandler.get(chatfuel_user_id);
         if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
         scheduleHandler
             .getSemester(account.studentCode, account.password)
@@ -50,7 +50,7 @@ module.exports = function({ models: { Schedule, Account } }) {
     const saveSchedule = async function(req, res, next) {
         if (!validated(req, res)) return;
         let { chatfuel_user_id, semester } = req.query;
-        let account = await accountHandler.get(chatfuel_user_id);
+        const account = await accountHandler.get(chatfuel_user_id);
         if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
         scheduleHandler
             .save(account.studentCode, account.password, semester)
@@ -60,14 +60,45 @@ module.exports = function({ models: { Schedule, Account } }) {
 
     const search = async function(req, res, next) {
         if (!validated(req, res)) return;
-        let { chatfuel_user_id, gender, first_name, last_name, profile_pic_url, studentCode, password } = req.query;
+        let { chatfuel_user_id, inputSearch, typeSearch } = req.query;
+        const account = await accountHandler.get(chatfuel_user_id);
+        if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
+        typeSearch = `${typeSearch}`.toLowerCase();
+        if (["hôm nay", "ngày mai", "ngày khác"].includes(typeSearch)) {
+            if (typeSearch == "hôm nay") inputSearch = undefined;
+            else if (typeSearch == "ngày mai") inputSearch = scheduleHandler.getNextDay();
+            scheduleHandler
+                .searchOne(account.studentCode, inputSearch)
+                .then(text => (new Chatfuel).sendText(text).render())
+                .then(json => res.send(json))
+                .catch(e => res.send((new Chatfuel).sendText(`Có lỗi xảy ra:\n${e}`).render()));
+        }
+        else if (["tuần này", "tuần khác"].includes(typeSearch)) {
+            scheduleHandler
+                .searchMulti(account.studentCode, inputSearch)
+                .then(texts => {
+                    const chatfuel = new Chatfuel();
+                    texts.forEach(text => chatfuel.sendText(text));
+                    return chatfuel.render();
+                })
+                .then(json => res.send(json))
+                .catch(e => res.send((new Chatfuel).sendText(`Có lỗi xảy ra:\n${e}`).render()));
+        }
+        else res.send((new Chatfuel).sendText(`Có lỗi xảy ra:\nKhông thể tìm kiếm theo phương thức này`).render())
+
 
     }
 
     const broadcast = async function(req, res, next) {
         if (!validated(req, res)) return;
-        let { chatfuel_user_id, gender, first_name, last_name, profile_pic_url, studentCode, password } = req.query;
-
+        let { chatfuel_user_id } = req.query;
+        const account = await accountHandler.get(chatfuel_user_id);
+        if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
+        scheduleHandler
+            .searchOne(account.studentCode, scheduleHandler.getNextDay())
+            .then(text => (new Chatfuel).sendText(text).render())
+            .then(json => res.send(json))
+            .catch(e => res.send((new Chatfuel).sendText(`Có lỗi xảy ra:\n${e}`).render()));
     }
 
     return {

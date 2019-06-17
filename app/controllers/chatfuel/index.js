@@ -13,7 +13,7 @@ const indexRouterController = function({ models: { User, Account } }) {
         if (!validated(req, res)) return;
         let { chatfuel_user_id, gender, first_name, last_name, profile_pic_url, message } = req.query;
 
-        let [{ filterBadword, voiceChat } , created] = await userHandler.add({ chatfuel_user_id, gender, first_name, last_name, profile_pic_url });
+        let [{ filterBadword, voiceChat }, created] = await userHandler.add({ chatfuel_user_id, gender, first_name, last_name, profile_pic_url });
         const chatfuel = new Chatfuel();
         if (regexUrl.test(message)) {
             //
@@ -74,18 +74,31 @@ const indexRouterController = function({ models: { User, Account } }) {
             })
         }
 
-        if (/^tkb/.test(message)) {
+        if (message == "help") {
 
-            return res.send((new Chatfuel()).redirectToBlock(['thoi_khoa_bieu']));
+            return res.send((new Chatfuel()).redirectToBlock(['help']));
+        }
+        if (message == "tkb") {
+
+            return res.send((new Chatfuel()).redirectToBlock(['search_schedule']));
+        }
+        if (message == "connect") {
+
+            return res.send((new Chatfuel()).redirectToBlock(['connect_account']));
+        }
+        if (message == "download") {
+
+            return res.send((new Chatfuel()).redirectToBlock(['download_schedule']));
         }
 
 
-        if (/^tinchi/.test(message)) {
 
-            let account = await accountHandler.get(chatfuel_user_id);
-            if (!account) return res.end();
-            return res.send((new Chatfuel()).redirectToBlock(['tin_chi']));
-        }
+        // if (/^tinchi/.test(message)) {
+
+        //     let account = await accountHandler.get(chatfuel_user_id);
+        //     if (!account) return res.end();
+        //     return res.send((new Chatfuel()).redirectToBlock(['tin_chi']));
+        // }
 
         simsimi(message, filterBadword)
             .then(function(response) {
@@ -97,4 +110,3 @@ const indexRouterController = function({ models: { User, Account } }) {
 }
 
 module.exports = indexRouterController
-

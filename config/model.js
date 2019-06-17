@@ -5,7 +5,7 @@ module.exports = function({ sequelize }) {
   const Schedule = require("@models/schedule")({ sequelize });
   User.sync({ force });
   Account.sync({ force });
-  Schedule.sync({ force });
+  Schedule.sync({ force: false });
 
   // User.hasOne(Account, { foreignKey: "userId" });
   // Account.belongsTo(User, { foreignKey: "chatfuel_user_id" });
