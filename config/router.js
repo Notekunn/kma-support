@@ -9,4 +9,7 @@ module.exports = function({app, models}) {
   app.use('/api/chatfuel/disconnect', require("@routes/api/chatfuel/disconnect")({models}));  
   app.use('/api/chatfuel/schedule/', require("@routes/api/chatfuel/schedule")({models}));
 
+  //Api
+  app.use('/api/v1/login', require("@routes/api/login")({models}))
+
 }

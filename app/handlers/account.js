@@ -15,7 +15,7 @@ module.exports = class Account {
         return [created];
     }
 
-    async get(chatfuel_user_id) {
+    async getByUID(chatfuel_user_id) {
         const account = await this.Account.findOne({
             where: {
                 userId: chatfuel_user_id
@@ -23,8 +23,17 @@ module.exports = class Account {
         })
         return account && account.get({ plain: true })
     }
+    
+    async getByStudentCode(studentCode) {
+        const account = await this.Account.findOne({
+            where: {
+                studentCode
+            }
+        })
+        return account && account.get({ plain: true })
+    }
 
-    check(studentCode, password) {
+    check(studentCode = "", password = "") {
         return new Promise(function(resolve, reject) {
             loginKMA({ user: studentCode, pass: password }, async function(error, api) {
                 if (error) resolve(false);
@@ -40,5 +49,6 @@ module.exports = class Account {
             .then(() => Promise.solve(false))
             .catch(() => Promise.solve(true))
     }
+
 
 }

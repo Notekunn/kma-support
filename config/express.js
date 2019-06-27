@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
-// const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 module.exports = function({app}) {
 
 
@@ -9,8 +9,8 @@ module.exports = function({app}) {
   app.set('view engine', 'ejs');
 
   app.use(logger('dev'));
-  app.use(express.json());
-  app.use(express.urlencoded({
+  app.use(bodyParser.json());    
+  app.use(bodyParser.urlencoded({
     extended: false
   }));
   // app.use(cookieParser());

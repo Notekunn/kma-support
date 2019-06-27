@@ -10,7 +10,7 @@ module.exports = function({ models: { Schedule, Account } }) {
     const download = async function(req, res, next) {
         if (!validated(req, res)) return;
         const { chatfuel_user_id, gender, first_name, last_name, profile_pic_url, url_server } = req.query;
-        const account = await accountHandler.get(chatfuel_user_id);
+        const account = await accountHandler.getByUID(chatfuel_user_id);
         if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
         scheduleHandler
             .getSemester(account.studentCode, account.password)
@@ -50,7 +50,7 @@ module.exports = function({ models: { Schedule, Account } }) {
     const saveSchedule = async function(req, res, next) {
         if (!validated(req, res)) return;
         let { chatfuel_user_id, semester } = req.query;
-        const account = await accountHandler.get(chatfuel_user_id);
+        const account = await accountHandler.getByUID(chatfuel_user_id);
         if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
         scheduleHandler
             .save(account.studentCode, account.password, semester)
@@ -61,7 +61,7 @@ module.exports = function({ models: { Schedule, Account } }) {
     const search = async function(req, res, next) {
         if (!validated(req, res)) return;
         let { chatfuel_user_id, inputSearch, typeSearch } = req.query;
-        const account = await accountHandler.get(chatfuel_user_id);
+        const account = await accountHandler.getByUID(chatfuel_user_id);
         if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
         typeSearch = `${typeSearch}`.toLowerCase();
         if (["hôm nay", "ngày mai", "ngày khác"].includes(typeSearch)) {
@@ -92,7 +92,7 @@ module.exports = function({ models: { Schedule, Account } }) {
     const broadcast = async function(req, res, next) {
         if (!validated(req, res)) return;
         let { chatfuel_user_id } = req.query;
-        const account = await accountHandler.get(chatfuel_user_id);
+        const account = await accountHandler.getByUID(chatfuel_user_id);
         if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
         scheduleHandler
             .searchOne(account.studentCode, scheduleHandler.getNextDay())

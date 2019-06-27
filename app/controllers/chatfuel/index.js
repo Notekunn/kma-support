@@ -95,7 +95,7 @@ const indexRouterController = function({ models: { User, Account } }) {
 
         // if (/^tinchi/.test(message)) {
 
-        //     let account = await accountHandler.get(chatfuel_user_id);
+        //     let account = await accountHandler.getByUID(chatfuel_user_id);
         //     if (!account) return res.end();
         //     return res.send((new Chatfuel()).redirectToBlock(['tin_chi']));
         // }

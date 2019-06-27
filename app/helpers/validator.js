@@ -1,6 +1,6 @@
-const { buildCheckFunction, query } = require('express-validator/check');
+const { buildCheckFunction, query , header, body} = require('express-validator/check');
 const checkBodyAndQuery = buildCheckFunction(['body', 'query']);
-
+const jwt = require('jsonwebtoken');
 const chatfuelValidator = [
     query('chatfuel_user_id')
     .custom((value) => !!value && (parseInt(value, 10) > 0))
@@ -21,7 +21,17 @@ const chatfuelValidator = [
         checkFalsy: true
     })
 ];
+const apiValidator = [
+    
+];
 
+const loginValidator = [
+    body("user", "User bạn nhập không hợp lệ")
+    .exists(),
+    body("pass", "Password bạn nhập không hợp lệ")
+    .exists()
+]
 module.exports = {
-    chatfuelValidator
+    chatfuelValidator,
+    loginValidator
 }
