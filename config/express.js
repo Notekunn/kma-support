@@ -8,7 +8,7 @@ module.exports = function({app}) {
   app.set('views', path.join(__dirname, '../app/views'));
   app.set('view engine', 'ejs');
 
-  app.use(logger('dev'));
+  if(process.env.NODE_ENV == "development") app.use(logger('dev'));
   app.use(bodyParser.json());    
   app.use(bodyParser.urlencoded({
     extended: false
