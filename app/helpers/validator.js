@@ -6,10 +6,7 @@ const chatfuelValidator = [
     .custom((value) => !!value && (parseInt(value, 10) > 0))
     .withMessage('Trường chatfuel_user_id không hợp lệ'),
     query('gender', "Trường gender không tồn tại")
-    .exists({
-        checkNull: true,
-        checkFalsy: true
-    }),
+    .exists(),
     query('first_name', 'Trường first_name không hợp lệ')
     .exists({
         checkNull: true,
