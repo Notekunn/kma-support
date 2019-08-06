@@ -1,5 +1,9 @@
 {
-    "SIMSIMI_KEY": "3bce68aa-c962-4140-b1b3-c9e599712ab5",
-    "HTTPS": true,
-    "SECRET_KEY_JWT": "qewrrwe"
+	"database": {
+		"dialect": "sqlite",
+		"storage": "C:\\Users\\ICAFE8\\Desktop\\kma-support\\bin\\data.sqlite"
+	},
+	"HTTPS": true,
+	"SIMSIMI_KEY": "DEFAULT_KEY",
+	"SECRET_KEY_JWT": "DEFAULT_SECRET"
 }

@@ -105,6 +105,8 @@ const indexRouterController = function({ models: { User, Account } }) {
                 if (!response) return res.send((new Chatfuel()).sendText(message).render())
                 if (voiceChat) return res.send((new Chatfuel()).sendAudio(`http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=vi&q=${encodeURI(response)}`).render());
                 res.send((new Chatfuel()).sendText(response).render())
+            }).catch(error => {
+                res.send((new Chatfuel()).sendText("Có lỗi xảy ra:\n" + e.stack || e).render());
             })
     }
 }

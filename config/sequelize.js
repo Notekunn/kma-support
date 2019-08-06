@@ -1,10 +1,7 @@
 const Sequelize = require("sequelize");
+const {database} = require("@configFile");
 module.exports = new Sequelize({
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    dialect: process.env.DB_TYPE,
+    ...database,
     pool: {
         max: 20,
         min: 0,

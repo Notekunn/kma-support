@@ -11,11 +11,11 @@ sequelize
     require("@config/router")({ app , models});
     require("@config/error")({ app});
   })
-  // .catch(function(e) {
-  //   console.log("Can't connect to database!");
-  //   console.log("ERR: " + e);
-  //   process.exit(1);
-  // })
+  .catch(function(e) {
+    console.log("Can't connect to database!");
+    console.log(e.stack || e);
+    process.exit(1);
+  })
 
 
 module.exports = app;
