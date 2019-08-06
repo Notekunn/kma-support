@@ -5,7 +5,7 @@ const dialects = ['mysql', 'mariadb', 'postgres', 'mssql', 'sqlite'];
 
 const pathSqlite = path.resolve(__dirname, './data.sqlite');
 const pathConfig = path.resolve(__dirname, '../config/config.json');
-
+if(fs.existsSync(pathConfig)) return;
 let keyDialect;
 const config = new Object({
     database: new Object()
@@ -14,7 +14,15 @@ const config = new Object({
 do {
     keyDialect = readlineSync.keyInSelect(dialects, 'Which database u use?');
 } while (keyDialect == -1);
+try {
+    fs.writeFileSync(pathSqlite, "");
+    console.log("Tạo file `data.sqlite` thành công.");
+} catch (error) {
 
+    console.log("Vui lòng tạo file `data.sqlite` thủ công trong thư mục bin");
+    console.log(error.stack);
+    return;
+}
 const dialect = dialects[keyDialect];
 config.database = initDatabase(dialect);
 config.HTTPS = readlineSync.keyInYN('Is https server api?', { defaultInput: 'N' });
