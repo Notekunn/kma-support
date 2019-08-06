@@ -30,21 +30,25 @@ module.exports = class Schedule {
         })
     }
 
-    async save(studentCode, password, semester) {
+    async save(studentCode, password, semester, callback) {
         try {
 
             const scheduleData = await this.download(studentCode, password, semester);
-            return Promise.all(scheduleData.map(schedule => this.Schedule.findOrCreate({
-                where: {
-                    studentCode,
-                    ...schedule
-                },
-                defaults: {}
-            })));
+            callback(undefined, false);
+            for(let i = 0; i < scheduleData.length; i++){
+                const schedule = scheduleData[i];
+                await this.Schedule.findOrCreate({
+                    where: {
+                        studentCode,
+                        ...schedule
+                    },
+                    defaults: {}
+                });
+            }
 
         }
         catch (e) {
-            return Promise.reject(e)
+            callback(e);
         }
     }
 

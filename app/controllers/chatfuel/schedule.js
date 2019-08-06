@@ -53,9 +53,10 @@ module.exports = function ({ models: { Schedule, Account } }) {
         const account = await accountHandler.getByUID(chatfuel_user_id);
         if (!account) return res.send((new Chatfuel()).sendText("Bạn chưa kết nối với tài khoản sinh viên!\nVui lòng kết nối!").render());
         scheduleHandler
-            .save(account.studentCode, account.password, semester)
-            .then(() => res.send((new Chatfuel()).sendText("Đang tiến hành tải thời khóa biểu về!\nVui lòng chờ trong giây lát!").render()))
-            .catch((e) => res.send((new Chatfuel()).sendText("Không thể tải thời khóa biểu:\n" + e.stack || e).render()))
+            .save(account.studentCode, account.password, semester, function(error, done){
+                if(error) return res.send((new Chatfuel()).sendText("Không thể tải thời khóa biểu:\n" + e.stack || e).render());
+                return res.send((new Chatfuel()).sendText("Đang tiến hành tải thời khóa biểu về!\nVui lòng chờ trong giây lát!").render());
+            })
     }
 
     const search = async function (req, res, next) {

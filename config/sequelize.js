@@ -20,5 +20,5 @@ module.exports = new Sequelize({
         timestamps: true
     },
     sync: { force: process.env.NODE_ENV == 'build' },
-
+    transactionType: 'IMMEDIATE'
 })
