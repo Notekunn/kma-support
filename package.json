@@ -27,7 +27,7 @@
     "readline-sync": "^1.4.9",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "sequelize": "^5.8.9",
+    "sequelize": "^5.15.1",
     "sqlite3": "^4.0.9",
     "tedious": "^6.2.0",
     "tin-chi-kma": "^1.0.3"
